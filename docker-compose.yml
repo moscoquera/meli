@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  redis:
+    image: 'redis'
+    expose:
+     -"6379"
+    
+  gateway:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    expose:
+      - "5000"
+    ports:
+      - 5000:5000
+    secrets:
+      - user_ssh_key
+
+  ms-articles:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    expose:
+      - "5000"
+    ports:
+      - 5000:5000
+    secrets:
+      - user_ssh_key
+  
+  fetcher:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    expose:
+      - "5000"
+    ports:
+      - 5000:5000
+    secrets:
+      - user_ssh_key
+
+
+
+secrets:
+  user_ssh_key:
+    file: c:\users\andre\.ssh\id_rsa
