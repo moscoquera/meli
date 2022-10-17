@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticlesService = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
+const rxjs_1 = require("rxjs");
 let ArticlesService = class ArticlesService {
     constructor(client) {
         this.client = client;
     }
     async getList(page, size) {
-        return this.client.send('articles.list', {});
+        return (0, rxjs_1.firstValueFrom)(this.client.send('articles.list', { page, size }));
     }
 };
 ArticlesService = __decorate([

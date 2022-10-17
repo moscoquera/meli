@@ -21,7 +21,7 @@ let ArticlesController = class ArticlesController {
         this.articlesService = articlesService;
     }
     async list(queryParams) {
-        return [];
+        return this.articlesService.getList(queryParams.page, queryParams.size);
     }
 };
 __decorate([
