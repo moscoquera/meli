@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { SpaceFlightNewsModule } from './space-flight-news/space-flight-news.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule.forRoot(), SpaceFlightNewsModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

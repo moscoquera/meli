@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios'
+import { SpaceFlightNewsService } from './articles/space-flight-news.service';
+import { SpaceFlightNewsController } from './articles/space-flight-news.controller';
+
+@Module({
+  imports:[HttpModule],
+  controllers: [SpaceFlightNewsController],
+  providers: [SpaceFlightNewsService]
+})
+export class SpaceFlightNewsModule {}
