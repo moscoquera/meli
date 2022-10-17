@@ -8,6 +8,7 @@ export class ArticlesController {
 
   @Get()
   public async list(@Query() queryParams: QueryDto){
-    return [];
+    console.log('asjsaklsjao')
+    return Promise.resolve('asa') //this.articlesService.getList(queryParams.page, queryParams.size);
   }
 }
