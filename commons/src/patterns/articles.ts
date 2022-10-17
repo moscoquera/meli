@@ -1,5 +1,5 @@
 
 export class ListMessage {
-    page: number;
-    size: number;
+    page: number=1;
+    size: number=10;
 }
