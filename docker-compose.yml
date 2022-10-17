@@ -7,37 +7,47 @@ services:
      - "6379"
     
   gateway:
+    depends_on:
+      - ms-articles
     build:
-      dockerfile: Dockerfile
-      context: .
-    working_dir: /app
+      dockerfile: ../micro.Dockerfile
+      context: ./gateway
+      args:
+        - SUBFOLDER=gateway
+    working_dir: /project/gateway
     environment:
       - NODE_ENV=development
     expose:
-      - "5000"
+      - "3000"
     ports:
-      - 5000:5000
+      - 3000:3000
     secrets:
-      - user_ssh_key
+      - source: user_ssh_key
+        target: /root/.ssh/id_rsa
+        mode: 0600
 
   ms-articles:
     build:
-      dockerfile: Dockerfile
-      context: .
-    working_dir: /app
+      dockerfile: ../micro.Dockerfile
+      context: ./ms-articles
+      args:
+        - SUBFOLDER=ms-articles
+    working_dir: /project/ms-articles
     environment:
       - NODE_ENV=development
     expose:
-      - "5000"
+      - "8881"
     ports:
-      - 5000:5000
+      - 8881:8881
     secrets:
-      - user_ssh_key
+      - source: user_ssh_key
+        target: /root/.ssh/id_rsa
+        mode: 0600
   
   fetcher:
     build:
       dockerfile: Dockerfile
-      context: .
+      context: ./fetcher
     working_dir: /app
     environment:
       - NODE_ENV=development

@@ -9,24 +9,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const articles_module_1 = require("./articles/articles.module");
-const microservices_1 = require("@nestjs/microservices");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            microservices_1.ClientsModule.register([
-                {
-                    name: 'ms-articles',
-                    transport: microservices_1.Transport.TCP,
-                    options: {
-                        host: 'ms-articles',
-                        port: 8881,
-                    }
-                }
-            ]),
-            articles_module_1.ArticlesModule
-        ],
+        imports: [articles_module_1.ArticlesModule],
     })
 ], AppModule);
 exports.AppModule = AppModule;

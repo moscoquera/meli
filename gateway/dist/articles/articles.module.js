@@ -10,10 +10,23 @@ exports.ArticlesModule = void 0;
 const common_1 = require("@nestjs/common");
 const articles_service_1 = require("./articles.service");
 const articles_controller_1 = require("./articles.controller");
+const microservices_1 = require("@nestjs/microservices");
 let ArticlesModule = class ArticlesModule {
 };
 ArticlesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: 'ms-articles',
+                    transport: microservices_1.Transport.TCP,
+                    options: {
+                        host: 'ms-articles',
+                        port: 8881,
+                    }
+                }
+            ])
+        ],
         controllers: [articles_controller_1.ArticlesController],
         providers: [articles_service_1.ArticlesService]
     })
