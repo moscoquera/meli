@@ -2,7 +2,7 @@
   "name": "commons",
   "version": "1.0.0",
   "description": "common classes",
-  "type": "module",
+  "type": "commonjs",
   "main": "lib/index.js",
    "types": "lib/index.d.ts",
    "scripts": {
