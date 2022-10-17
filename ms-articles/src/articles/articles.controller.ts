@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ArticlesService } from './articles.service';
-import {ListMessage} from '@meli/commons/index';
+import {ListMessage} from 'commons';
 
 @Controller()
 export class ArticlesController {
