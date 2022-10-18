@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: melipassword
+      MYSQL_DATABASE: meli
+    expose:
+      - 3306
+
   redis:
     image: 'redis'
     expose:
@@ -27,6 +37,9 @@ services:
         mode: 0600
 
   ms-articles:
+    depends_on:
+      - fetcher
+      - db
     build:
       dockerfile: ../micro.Dockerfile
       context: ./ms-articles
@@ -46,17 +59,21 @@ services:
   
   fetcher:
     build:
-      dockerfile: Dockerfile
+      dockerfile: ../micro.Dockerfile
       context: ./fetcher
-    working_dir: /app
+      args:
+        - SUBFOLDER=fetcher
+    working_dir: /project/fetcher
     environment:
       - NODE_ENV=development
     expose:
-      - "5000"
+      - "8891"
     ports:
-      - 5000:5000
+      - 8891:8891
     secrets:
-      - user_ssh_key
+      - source: user_ssh_key
+        target: /root/.ssh/id_rsa
+        mode: 0600
 
 
 
