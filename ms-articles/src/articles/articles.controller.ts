@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { ArticlesService } from './articles.service';
+import { ArticlesService } from './services/articles.service';
 import {ListMessage} from 'commons';
 
 @Controller()
@@ -11,6 +11,6 @@ export class ArticlesController {
 
   @MessagePattern('articles.list')
   async list(@Payload() data: ListMessage) {
-      return data;
+      return this.articlesService.count();
   }
 }
