@@ -13,7 +13,7 @@ export class SpaceFlightNewsService {
     }
 0
     async list(page: number, size: number){
-        return {page, size}
+        return (await firstValueFrom(this.httpService.get(`${this.host}/articles`,{params:{_limit:size, _start:size*(page-1)}}))).data;
     }
 
     async count(){
