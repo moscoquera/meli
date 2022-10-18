@@ -12,4 +12,9 @@ export class FetcherService {
         return parseInt(result);
     }
 
+    async list(page:number, size:number): Promise<any>{
+        return await firstValueFrom(this.fetcherService.send('articles.list',{size, page}));
+    }
+
+
 }

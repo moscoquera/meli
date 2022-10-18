@@ -11,6 +11,6 @@ export class ArticlesController {
 
   @MessagePattern('articles.list')
   async list(@Payload() data: ListMessage) {
-      return this.articlesService.count();
+      return this.articlesService.list(data.page, data.size);
   }
 }

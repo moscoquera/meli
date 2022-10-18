@@ -19,4 +19,11 @@ export class ArticlesService {
         await this.configRepository.insert({ key: 'articles_count', value: ""+count});
         return count;
     }
+
+    async list(page:number, size:number): Promise<any>{
+        const remoteStart = (page-1)*size; //from paginated 1-index to 0 index
+        const remotePage = Math.floor(remoteStart/100)+1 //to 1 index again with a different page size
+        return await this.fetcherService.list(remotePage,100);
+        
+    }
 }
