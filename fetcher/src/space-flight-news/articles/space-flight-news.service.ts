@@ -3,8 +3,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { Queue } from 'bull';
-import { sign } from 'crypto';
-import moment from 'moment';
+import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
 import { ScheduleJobDto } from '../dtos/scheduledJob.dto';
 import { SpaceArticleDto } from '../dtos/SpaceArticle.dto';
@@ -38,7 +37,9 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
     }
 
     async list(page: number, size: number): Promise<SpaceArticleDto[]>{
-        return (await firstValueFrom(this.httpService.get(`${this.host}/articles`,{params:{_limit:size, _start:size*(page-1)}}))).data;
+        const result = (await firstValueFrom(this.httpService.get(`${this.host}/articles`,{params:{_limit:size, _start:size*(page-1)}}))).data;
+        this.updateLastFetchTime();
+        return result;
     }
 
     async count(){
@@ -50,7 +51,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
     }
 
     updateLastFetchTime(){
-        return this.lastFetchTime;
+        return this.lastFetchTime=new Date();
     }
 
     canFetchNow(){

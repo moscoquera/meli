@@ -10,7 +10,7 @@ export class SpaceFlightNewsController {
 
   @MessagePattern('articles.list')
   async list(@Payload() data: ListMessage){
-    return this.spaceFlightNewsService.list(data.page, data.size);
+    return this.spaceFlightNewsService.listOrSchedule(data.page, data.size);
   }
 
   @MessagePattern('articles.list.count')
