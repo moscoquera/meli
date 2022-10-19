@@ -21,7 +21,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
         private schedulerRegistry: SchedulerRegistry,
         private readonly httpService: HttpService) {
         this.host = process.env.SPACE_HOST;
-        this.delayTime = parseInt(process.env.DELAY_TIME);
+        this.delayTime = 10; //parseInt(process.env.DELAY_TIME);
     }
     
     async onApplicationBootstrap() {
@@ -33,6 +33,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
             return this.list(page, size);
         }
         const job = await this.articlesListQueue.add({page,size},{timeout:60*1000});
+        await this.scheduleNextPull();
         return { name: job.queue.name, data:  {page, size}} as ScheduleJobDto;
     }
 
@@ -73,11 +74,17 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
         await this.articlesListQueue.pause();
         try{
             const timeout = this.schedulerRegistry.getTimeout('article_list_fetch');
-            const remainingTime = this.remainingTime()*1000;
-            const newTimeout = setTimeout(this.resumenQueue,remainingTime);
-            await this.schedulerRegistry.addTimeout('article_list_fetch', newTimeout);
+            //console.log("existing timeout ");
         }catch(eror){
-            return this.resumenQueue();
+            //console.log("no timeout")
+            if(this.canFetchNow()){
+                return this.resumenQueue();
+            }
+            const remainingTime = this.remainingTime()*1000;
+            //console.log('scheduled for: '+remainingTime);
+            const newTimeout = setTimeout(this.resumenQueue.bind(this),remainingTime);
+            await this.schedulerRegistry.addTimeout('article_list_fetch', newTimeout);
+            //console.log('scheduled for: '+remainingTime);
         }
         
         
@@ -85,5 +92,11 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
 
     async resumenQueue(){
         await this.articlesListQueue.resume();
+        try{
+            await this.schedulerRegistry.deleteTimeout('article_list_fetch');
+        }catch(err){
+
+        }
+        
     }
 }
