@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SpaceFlightNewsController } from './space-flight-news.controller';
-import { SpaceFlightNewsService } from './space-flight-news.service';
+import { SpaceFlightNewsService } from './services/space-flight-news.service';
 
 describe('SpaceFlightNewsController', () => {
   let controller: SpaceFlightNewsController;

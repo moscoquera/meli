@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { SpaceFlightNewsService } from './space-flight-news.service';
+import { SpaceFlightNewsService } from './services/space-flight-news.service';
 import {ListMessage} from 'commons'
 @Controller()
 export class SpaceFlightNewsController {

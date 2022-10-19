@@ -2,11 +2,12 @@ import { HttpService } from '@nestjs/axios';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import {EventEmitter2} from '@nestjs/event-emitter'
 import { Queue } from 'bull';
 import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
-import { ScheduleJobDto } from '../dtos/scheduledJob.dto';
-import { SpaceArticleDto } from '../dtos/SpaceArticle.dto';
+import { ScheduleJobDto } from '../../dtos/scheduledJob.dto';
+import { SpaceArticleDto } from '../../dtos/SpaceArticle.dto';
 
 @Injectable()
 export class SpaceFlightNewsService implements OnApplicationBootstrap{
@@ -19,7 +20,8 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
     constructor(
         @InjectQueue('articles_request') private articlesListQueue: Queue,
         private schedulerRegistry: SchedulerRegistry,
-        private readonly httpService: HttpService) {
+        private readonly httpService: HttpService,
+        private readonly eventEmitter: EventEmitter2) {
         this.host = process.env.SPACE_HOST;
         this.delayTime = 10; //parseInt(process.env.DELAY_TIME);
     }
@@ -40,6 +42,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap{
     async list(page: number, size: number): Promise<SpaceArticleDto[]>{
         const result = (await firstValueFrom(this.httpService.get(`${this.host}/articles`,{params:{_limit:size, _start:size*(page-1)}}))).data;
         this.updateLastFetchTime();
+        this.eventEmitter.emit('articles_fetched', result);
         return result;
     }
 

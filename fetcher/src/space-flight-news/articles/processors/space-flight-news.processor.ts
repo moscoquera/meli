@@ -3,13 +3,14 @@ import { Processor, Process } from '@nestjs/bull';
 import { Inject } from '@nestjs/common';
 import { Job } from 'bull';
 import { ListMessage } from 'commons';
-import { ScheduleJobDto } from '../dtos/scheduledJob.dto';
-import { SpaceFlightNewsService } from './space-flight-news.service';
+import { ScheduleJobDto } from '../../dtos/scheduledJob.dto';
+import { SpaceFlightNewsService } from '../services/space-flight-news.service';
 
 @Processor('articles_request')
 export class SpaceFlightNewProcessor {
 
-    constructor(@Inject(SpaceFlightNewsService) private articlesService: SpaceFlightNewsService){}
+    constructor(@Inject(SpaceFlightNewsService) private articlesService: SpaceFlightNewsService
+    ){}
 
   @Process()
   async transcode(job: Job<unknown>) {
@@ -22,7 +23,7 @@ export class SpaceFlightNewProcessor {
          console.log(jobData)
       }
       else{
-        //console.log('SpaceFlightNewProcessor > transcode > 26 '+result.length+" "+ typeof result)
+       // await this.msArticlesService.send(result);
       }
 
       await this.articlesService.scheduleNextPull();
