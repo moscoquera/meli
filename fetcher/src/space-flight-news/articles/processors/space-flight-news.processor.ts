@@ -1,4 +1,3 @@
-
 import { Processor, Process } from '@nestjs/bull';
 import { Inject } from '@nestjs/common';
 import { Job } from 'bull';
@@ -8,29 +7,32 @@ import { SpaceFlightNewsService } from '../services/space-flight-news.service';
 
 @Processor('articles_request')
 export class SpaceFlightNewProcessor {
-
-    constructor(@Inject(SpaceFlightNewsService) private articlesService: SpaceFlightNewsService
-    ){}
+  constructor(
+    @Inject(SpaceFlightNewsService)
+    private articlesService: SpaceFlightNewsService,
+  ) {}
 
   @Process()
   async transcode(job: Job<unknown>) {
-      console.log("SpaceFlightNewProcessor > processing job: "+job.id)
-      const jobData = job.data as ListMessage;
-      const result = await this.articlesService.listOrSchedule(jobData.page, jobData.size);
-      await job.progress(1);
-      if(result instanceof ScheduleJobDto){ //scheduled again, do nothing, shouldn't happen
-         console.warn("invalid state for:"+jobData)
-         console.log(jobData)
-      }
-      else{
-       // await this.msArticlesService.send(result);
-      }
+    console.log('SpaceFlightNewProcessor > processing job: ' + job.id);
+    const jobData = job.data as ListMessage;
+    const result = await this.articlesService.listOrSchedule(
+      jobData.page,
+      jobData.size,
+    );
+    await job.progress(1);
+    if (result instanceof ScheduleJobDto) {
+      //scheduled again, do nothing, shouldn't happen
+      console.warn('invalid state for:' + jobData);
+      console.log(jobData);
+    } else {
+      // await this.msArticlesService.send(result);
+    }
 
-      await this.articlesService.scheduleNextPull();
-      
-      await job.moveToCompleted();
-      
+    await this.articlesService.scheduleNextPull();
+
+    await job.moveToCompleted();
+
     return;
   }
-
 }

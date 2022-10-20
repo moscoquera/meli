@@ -11,7 +11,9 @@ describe('SpaceFlightNewsController', () => {
       providers: [SpaceFlightNewsService],
     }).compile();
 
-    controller = module.get<SpaceFlightNewsController>(SpaceFlightNewsController);
+    controller = module.get<SpaceFlightNewsController>(
+      SpaceFlightNewsController,
+    );
   });
 
   it('should be defined', () => {

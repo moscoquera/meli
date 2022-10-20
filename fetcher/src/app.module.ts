@@ -6,15 +6,18 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SpaceFlightNewsModule } from './space-flight-news/space-flight-news.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), 
+  imports: [
+    ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     BullModule.forRoot({
-    redis:{
-      host: 'redis',
-      port: 6379
-    }
-  }), SpaceFlightNewsModule],
+      redis: {
+        host: 'redis',
+        port: 6379,
+      },
+    }),
+    SpaceFlightNewsModule,
+  ],
   controllers: [],
   providers: [],
 })

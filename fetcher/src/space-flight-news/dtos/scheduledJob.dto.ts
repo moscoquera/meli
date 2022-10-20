@@ -1,4 +1,4 @@
 export class ScheduleJobDto {
-    name: string;
-    data: unknown;
+  name: string;
+  data: unknown;
 }
