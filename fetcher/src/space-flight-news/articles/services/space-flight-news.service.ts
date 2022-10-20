@@ -29,7 +29,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     this.scheduleNextPull();
   }
-  
+
   async listOrSchedule(
     page: number,
     size: number,
@@ -54,7 +54,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
       )
     ).data;
     this.updateLastFetchTime();
-    this.eventEmitter.emit('articles_fetched', result);
+    this.eventEmitter.emit(process.env.QUEUE_ARTICLES_FETCHED, result);
     return result;
   }
 
