@@ -17,19 +17,19 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   private delayTime: number;
 
   constructor(
-    @InjectQueue('articles_request') private articlesListQueue: Queue,
+    @InjectQueue(process.env.QUEUE_ARTICLES_REQUEST) private articlesListQueue: Queue,
     private schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
     private readonly eventEmitter: EventEmitter2,
   ) {
     this.host = process.env.SPACE_HOST;
-    this.delayTime = 10; //parseInt(process.env.DELAY_TIME);
+    this.delayTime = parseInt(process.env.DELAY_TIME);
   }
 
   async onApplicationBootstrap() {
     this.scheduleNextPull();
   }
-  0;
+  
   async listOrSchedule(
     page: number,
     size: number,
