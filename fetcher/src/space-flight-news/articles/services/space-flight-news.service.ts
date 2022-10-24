@@ -4,6 +4,7 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Queue } from 'bull';
+import {} from '@nestjs/bull'
 import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
 import { ScheduleJobDto } from '../../dtos/scheduledJob.dto';
@@ -17,7 +18,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   private delayTime: number;
 
   constructor(
-    @InjectQueue(process.env.QUEUE_ARTICLES_REQUEST) private articlesListQueue: Queue,
+    @InjectQueue('articles_request') private articlesListQueue: Queue,
     private schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
     private readonly eventEmitter: EventEmitter2,
@@ -54,7 +55,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
       )
     ).data;
     this.updateLastFetchTime();
-    this.eventEmitter.emit(process.env.QUEUE_ARTICLES_FETCHED, result);
+    this.eventEmitter.emit('articles_fetched', result);
     return result;
   }
 

@@ -1,6 +1,6 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SpaceFlightNewsModule } from './space-flight-news/space-flight-news.module';
@@ -10,11 +10,16 @@ import { SpaceFlightNewsModule } from './space-flight-news/space-flight-news.mod
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
-    BullModule.forRoot({
-      redis: {
-        host: 'redis',
-        port: 6379,
+    BullModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => {
+        return {
+          redis: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT)
+          }
+        }
       },
+      imports:[]
     }),
     SpaceFlightNewsModule,
   ],

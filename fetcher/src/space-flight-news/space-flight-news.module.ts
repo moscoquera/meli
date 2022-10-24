@@ -10,7 +10,7 @@ import { ArticlesFetchedListener } from './articles/listeners/articles-fetched.l
 @Module({
   imports: [
     HttpModule,
-    BullModule.registerQueue(
+    BullModule.registerQueueAsync(
       {
         name: 'articles_request',
       },

@@ -58,7 +58,7 @@ describe('SpaceFlightNewsService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [SpaceFlightNewsService,
-        {provide: getQueueToken(process.env.QUEUE_ARTICLES_REQUEST), useValue: articlesQueue},
+        {provide: getQueueToken('articles_request'), useValue: articlesQueue},
         {provide: SchedulerRegistry, useValue: mockSchedulerRegistry},
         {provide: HttpService, useValue: mockHttpService},
         {provide: EventEmitter2, useValue: mockEventEmitter}
@@ -122,7 +122,7 @@ describe('SpaceFlightNewsService', () => {
 
       expect(service.updateLastFetchTime).toBeCalled();
       expect(mockEventEmitter.emit).toBeCalledWith(
-        process.env.QUEUE_ARTICLES_FETCHED,
+        'articles_fetched',
         mockSpaceArticles
         );
     });
