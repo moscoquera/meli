@@ -7,6 +7,8 @@ import { FetcherService } from './services/fetcher.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigEntity } from './entities/Config.entity';
 import { Article } from './entities/Article.entity';
+import { ArticlesSync } from './listeners/articlesSync.listener';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports:[
@@ -20,9 +22,12 @@ import { Article } from './entities/Article.entity';
           port: 8891,
         }
       }
-    ])
+    ]),
+    BullModule.registerQueue({
+      name: 'articles_cache',
+    })
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService, ConfigService, FetcherService]
+  providers: [ArticlesService, ConfigService, FetcherService, ArticlesSync]
 })
 export class ArticlesModule {}

@@ -1,5 +1,6 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticlesModule } from './articles/articles.module';
 
@@ -15,6 +16,17 @@ import { ArticlesModule } from './articles/articles.module';
       database: process.env.DB_NAME,
       synchronize: true,
       autoLoadEntities: true
+    }),
+    BullModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => {
+        return {
+          redis: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT)
+          }
+        }
+      },
+      imports:[]
     }),
     ArticlesModule],
   controllers: [],

@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { Article } from '../entities/Article.entity';
 import { ConfigEntity } from '../entities/Config.entity';
 import { FetcherService } from './fetcher.service';
 
 @Injectable()
 export class ArticlesService {
 
-    constructor(@InjectRepository(ConfigEntity) private configRepository: Repository<ConfigEntity>, private fetcherService: FetcherService ){};
+    constructor(@InjectRepository(ConfigEntity) private configRepository: Repository<ConfigEntity>, private fetcherService: FetcherService, @InjectRepository(Article) private articlesRepository: Repository<Article> ){};
 
     async count(): Promise<number>{
         const countEntity = await this.configRepository.findOne({where:{key:'articles_count'}});
@@ -26,4 +27,11 @@ export class ArticlesService {
         return await this.fetcherService.list(remotePage,100);
         
     }
+
+    async addOrUpdate(articleData: DeepPartial<Article>){
+        const article = this.articlesRepository.create(articleData);
+        return this.articlesRepository.save(article);
+    }
+
+    
 }
