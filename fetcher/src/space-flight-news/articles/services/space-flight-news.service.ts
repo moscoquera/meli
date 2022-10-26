@@ -50,7 +50,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
     const result = (
       await firstValueFrom(
         this.httpService.get(`${this.host}/articles`, {
-          params: { _limit: size, _start: size * (page - 1) },
+          params: { _limit: size, _start: size * (page - 1), _sort:'id' },
         }),
       )
     ).data;
