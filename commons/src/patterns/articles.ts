@@ -10,3 +10,9 @@ export class ArticleMessage {
     url: string;
     imageUrl: string;
 }
+
+export class ScheduleJoMessage {
+    name: string;
+    data: unknown;
+}
+  
