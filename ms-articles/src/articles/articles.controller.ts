@@ -11,6 +11,12 @@ export class ArticlesController {
 
   @MessagePattern('articles.list')
   async list(@Payload() data: ListMessage) {
-      return this.articlesService.list(data.page, data.size);
+      const result= await this.articlesService.list(data.page, data.size);
+      if(result == null){
+        return {
+          'caching':true
+        }
+      }
+      return result;
   }
 }
