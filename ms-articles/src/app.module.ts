@@ -8,27 +8,28 @@ import { ArticlesModule } from './articles/articles.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type:'mysql',
+      type: 'mysql',
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT) || 3306,
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       synchronize: true,
-      autoLoadEntities: true
+      autoLoadEntities: true,
     }),
     BullModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         return {
           redis: {
             host: process.env.REDIS_HOST,
-            port: parseInt(process.env.REDIS_PORT)
-          }
-        }
+            port: parseInt(process.env.REDIS_PORT),
+          },
+        };
       },
-      imports:[]
+      imports: [],
     }),
-    ArticlesModule],
+    ArticlesModule,
+  ],
   controllers: [],
   providers: [],
 })

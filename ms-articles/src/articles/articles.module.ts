@@ -11,23 +11,23 @@ import { ArticlesSync } from './processors/articlesSync.processor';
 import { BullModule } from '@nestjs/bull';
 
 @Module({
-  imports:[
+  imports: [
     TypeOrmModule.forFeature([ConfigEntity, Article]),
     ClientsModule.register([
       {
-        name:'fetcher',
+        name: 'fetcher',
         transport: Transport.TCP,
-        options:{
+        options: {
           host: 'fetcher',
           port: 8891,
-        }
-      }
+        },
+      },
     ]),
     BullModule.registerQueue({
       name: 'articles_cache',
-    })
+    }),
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService, ConfigService, FetcherService, ArticlesSync]
+  providers: [ArticlesService, ConfigService, FetcherService, ArticlesSync],
 })
 export class ArticlesModule {}
