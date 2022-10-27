@@ -33,6 +33,7 @@
     "@nestjs/schedule": "^2.1.0",
     "bull": "^4.10.1",
     "commons": "file:../commons",
+    "dotenv": "^16.0.3",
     "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -80,6 +81,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "setupFiles": ["<rootDir>/../test/setup-tests.ts"]
+    "setupFiles": [
+      "<rootDir>/../test/setup-tests.ts"
+    ]
   }
 }

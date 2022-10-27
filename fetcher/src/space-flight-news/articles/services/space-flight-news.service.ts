@@ -71,7 +71,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   }
 
   updateLastFetchTime() {
-    return (this.lastFetchTime = new Date());
+    this.lastFetchTime = new Date();
   }
 
   canFetchNow() {
