@@ -7,7 +7,7 @@ import { FetcherService } from './services/fetcher.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigEntity } from './entities/Config.entity';
 import { Article } from './entities/Article.entity';
-import { ArticlesSync } from './listeners/articlesSync.listener';
+import { ArticlesSync } from './processors/articlesSync.processor';
 import { BullModule } from '@nestjs/bull';
 
 @Module({

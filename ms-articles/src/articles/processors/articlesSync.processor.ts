@@ -13,7 +13,6 @@ export class ArticlesSync {
   async transcode(job: Job<unknown>) {
     const data = job.data as ArticleMessage;
     console.log('procesing from: articles_cache')
-    let progress = 0;
     
     await this.service.addOrUpdate({
         ...data
