@@ -72,7 +72,7 @@ export class ArticlesService {
   }
 
   async addOrUpdate(articleData: DeepPartial<Article>) {
-    const article = this.articlesRepository.create(articleData);
+    const article = this.articlesRepository.create({...articleData, title: articleData.title.substring(0,Math.min(articleData.title.length,512))});
     return this.articlesRepository.save(article);
   }
 }
