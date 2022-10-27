@@ -1,7 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SpaceFlightNewsService } from './services/space-flight-news.service';
-import { ListMessage } from 'commons';
+import { ArticleMessage, ListMessage } from 'commons';
+import { ScheduleJobDto } from '../dtos/scheduledJob.dto';
 @Controller()
 export class SpaceFlightNewsController {
   constructor(
@@ -9,7 +10,7 @@ export class SpaceFlightNewsController {
   ) {}
 
   @MessagePattern('articles.list')
-  async list(@Payload() data: ListMessage) {
+  async list(@Payload() data: ListMessage):Promise<ArticleMessage[] | ScheduleJobDto> {
     return this.spaceFlightNewsService.listOrSchedule(data.page, data.size);
   }
 

@@ -108,7 +108,7 @@ describe('SpaceFlightNewsService', () => {
 
       await service.list(1,10);
       expect(mockHttpService.get).toBeCalledWith(`${process.env.SPACE_HOST}/articles`, {
-        params: { _limit: 10, _start: 0 },
+        params: { _limit: 10, _start: 0, _sort:'id' },
       });
     });
 
