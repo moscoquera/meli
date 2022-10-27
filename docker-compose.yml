@@ -52,6 +52,7 @@ services:
     depends_on:
       - fetcher
       - db
+      - redis
     build:
       dockerfile: ../micro.Dockerfile
       context: ./ms-articles
@@ -70,6 +71,8 @@ services:
         mode: 0600
   
   fetcher:
+    depends_on:
+      - redis
     build:
       dockerfile: ../micro.Dockerfile
       context: ./fetcher
@@ -89,6 +92,8 @@ services:
 
   phpmyadmin:
     image: 'phpmyadmin/phpmyadmin'
+    depends_on:
+      - db
     ports:
       - 3080:80
     environment:
