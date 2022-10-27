@@ -100,6 +100,27 @@ services:
       - PMA_HOST=db
       - PMA_PORT=3306
       - MYSQL_ROOT_PASSWORD=melipassword
+  
+  frontend:
+    depends_on:
+      - ms-articles
+    build:
+      dockerfile: ../micro.Dockerfile
+      context: ./frontend
+      args:
+        - SUBFOLDER=frontend
+    working_dir: /project/frontend
+    environment:
+      - NODE_ENV=development
+    expose:
+      - "3000"
+    ports:
+      - 3040:3000
+    secrets:
+      - source: user_ssh_key
+        target: /root/.ssh/id_rsa
+        mode: 0600
+    command: npm run start
 
 
 secrets:
