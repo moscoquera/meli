@@ -7,7 +7,7 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Get()
-  public async list(@Query() queryParams: QueryDto){
+  public async list(@Query() queryParams: QueryDto) {
     return this.articlesService.getList(queryParams.page, queryParams.size);
   }
 }

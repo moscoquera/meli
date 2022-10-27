@@ -1,22 +1,32 @@
 import { Module } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { ArticlesController } from './articles.controller';
-import {ClientsModule, Transport } from '@nestjs/microservices'
+import {
+  ClientProxyFactory,
+  ClientsModule,
+  Transport,
+} from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ConfigModule.forRoot(),
+    ClientsModule.registerAsync([
       {
-        name:'ms-articles',
-        transport:Transport.TCP,
-        options:{
-           host: 'ms-articles',
-           port: 8881,
-        }
-      }
-    ])
+        name: 'ms-articles',
+        useFactory: async () => {
+          return {
+            transport: Transport.TCP,
+            options: {
+              host: process.env.MSARTICLES_HOST,
+              port: parseInt(process.env.MSARTICLES_PORT),
+            },
+          };
+        },
+      },
+    ]),
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService]
+  providers: [ArticlesService],
 })
 export class ArticlesModule {}
