@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleMessage, ScheduleJoMessage } from 'commons';
-import { DeepPartial, Repository } from 'typeorm';
+import { Between, DeepPartial, Repository } from 'typeorm';
 import { Article } from '../entities/Article.entity';
 import { ConfigEntity } from '../entities/Config.entity';
 import { FetcherService } from './fetcher.service';
@@ -37,15 +37,23 @@ export class ArticlesService {
 
     const cacheCount = await this.articlesRepository.count();
     let response: ArticleMessage[] | Article[] | ScheduleJoMessage;
-    if (endIndex < cacheCount) {
-      response = await await this.articlesRepository.find({
-        skip: startIndex,
-        take: size,
-        order: { id: 'ASC' },
-      });
-    } else {
+    response = await this.articlesRepository.find({
+      order: { id: 'ASC' },
+      where: {
+        remoteIndex: Between(startIndex, endIndex - 1),
+      },
+    });
+    if (response.length == 0) {
+      //No data found
       const remotePage = Math.floor(startIndex / 100) + 1; //to 1 index again with a different page size
-      response = await this.fetcherService.list(remotePage, 100);
+      response = await this.fetcherService.list(remotePage, 100); //TODO return subset
+      if (Array.isArray(response)) {
+        const subIndex = startIndex % 100;
+        response = response.slice(
+          subIndex,
+          Math.min(subIndex + size, response.length),
+        );
+      }
     }
 
     if (!Array.isArray(response)) {
@@ -72,7 +80,13 @@ export class ArticlesService {
   }
 
   async addOrUpdate(articleData: DeepPartial<Article>) {
-    const article = this.articlesRepository.create({...articleData, title: articleData.title.substring(0,Math.min(articleData.title.length,512))});
+    const article = this.articlesRepository.create({
+      ...articleData,
+      title: articleData.title.substring(
+        0,
+        Math.min(articleData.title.length, 512),
+      ),
+    });
     return this.articlesRepository.save(article);
   }
 }

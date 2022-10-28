@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ScheduleJoMessage } from 'commons';
 import { mock, MockProxy } from 'jest-mock-extended';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { Article } from '../entities/Article.entity';
 import { ConfigEntity } from '../entities/Config.entity';
 import { ArticlesService } from './articles.service';
@@ -31,6 +31,14 @@ describe('ArticlesService', () => {
         'https://mars.nasa.gov/system/news_items/main_images/9283_1-Illustration-of-SHIELD-web.jpg',
     },
   ] as Article[];
+
+  let remoteMockArticles = [];
+
+  beforeAll(() => {
+    for (let index = 0; index < 100; index++) {
+      remoteMockArticles.push({ ...mockArticles[0], id: index });
+    }
+  });
 
   beforeEach(async () => {
     mockConfigRepository = mock<Repository<ConfigEntity>>();
@@ -94,9 +102,10 @@ describe('ArticlesService', () => {
 
       expect(mockArticleRepository.count).toBeCalled();
       expect(mockArticleRepository.find).toBeCalledWith({
-        skip: 40,
-        take: 10,
         order: { id: 'ASC' },
+        where: {
+          remoteIndex: Between(40, 49),
+        },
       });
       expect(result).toEqual({
         data: mockArticles,
@@ -109,14 +118,15 @@ describe('ArticlesService', () => {
 
     it('should call list from the fetcher service', async () => {
       mockArticleRepository.count.mockResolvedValue(0);
-      mockFetcherService.list.mockResolvedValue(mockArticles);
+      mockArticleRepository.find.mockResolvedValue([]);
+      mockFetcherService.list.mockResolvedValue(remoteMockArticles);
       service.count = jest.fn().mockResolvedValue(200);
       const result = await service.list(5, 10);
 
       expect(mockArticleRepository.count).toBeCalled();
       expect(mockFetcherService.list).toBeCalledWith(1, 100);
       expect(result).toEqual({
-        data: mockArticles,
+        data: remoteMockArticles.slice(40, 50),
         size: 10,
         page: 5,
         totalPages: 20,
@@ -129,6 +139,7 @@ describe('ArticlesService', () => {
       mockFetcherService.list.mockResolvedValue({
         name: 'fake-job',
       } as ScheduleJoMessage);
+      mockArticleRepository.find.mockResolvedValue([]);
       service.count = jest.fn().mockResolvedValue(200);
       const result = await service.list(5, 10);
 

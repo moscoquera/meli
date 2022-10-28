@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  Index,
+} from 'typeorm';
 
 @Entity('articles')
 export class Article {
@@ -16,4 +22,8 @@ export class Article {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @Index()
+  @Column('int')
+  remoteIndex: number;
 }

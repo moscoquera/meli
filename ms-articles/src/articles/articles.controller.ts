@@ -9,7 +9,15 @@ export class ArticlesController {
 
   @MessagePattern('articles.list')
   async list(@Payload() data: ListMessage) {
-    const result = await this.articlesService.list(data.page, data.size);
+    let page = data.page;
+    let size = data.size;
+    if (typeof data.page == 'string') {
+      page = parseInt(data.page);
+    }
+    if (typeof data.size == 'string') {
+      size = parseInt(data.size);
+    }
+    const result = await this.articlesService.list(page, size);
     if (result == null) {
       return {
         caching: true,
