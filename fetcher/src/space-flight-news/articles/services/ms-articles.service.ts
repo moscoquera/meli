@@ -18,6 +18,7 @@ export class MSArticlesService {
           title: article.title,
           url: article.url,
           imageUrl: article.imageUrl,
+          remoteIndex: article.remoteIndex
         } as ArticleMessage,
       };
     });

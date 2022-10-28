@@ -48,13 +48,17 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   }
 
   async list(page: number, size: number): Promise<SpaceArticleDto[]> {
+    const start = size * (page - 1);
     const result = (
       await firstValueFrom(
-        this.httpService.get(`${this.host}/articles`, {
-          params: { _limit: size, _start: size * (page - 1), _sort:'id' },
+        this.httpService.get<SpaceArticleDto[]>(`${this.host}/articles`, {
+          params: { _limit: size, _start: start, _sort:'id' },
         }),
       )
-    ).data;
+    ).data.map((article, index) => {
+      article.remoteIndex=start+index;
+      return article;
+    });
     this.updateLastFetchTime();
     this.eventEmitter.emit('articles_fetched', result);
     return result;

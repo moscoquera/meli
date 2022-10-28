@@ -104,7 +104,7 @@ describe('SpaceFlightNewsService', () => {
   describe('tests for list', () => {
 
     it('should call httpService.get', async()=>{
-      mockHttpService.get.mockReturnValue(of<AxiosResponse>({} as AxiosResponse));
+      mockHttpService.get.mockReturnValue(of<AxiosResponse>({data:[]} as AxiosResponse));
 
       await service.list(1,10);
       expect(mockHttpService.get).toBeCalledWith(`${process.env.SPACE_HOST}/articles`, {

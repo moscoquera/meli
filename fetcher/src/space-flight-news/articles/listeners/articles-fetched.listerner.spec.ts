@@ -21,7 +21,8 @@ describe('tests for articles-fetched listener', () => {
             updatedAt: new Date("2022-10-20T17:13:35.034Z"),
             featured: false,
             launches: [],
-            events: []
+            events: [],
+            remoteIndex:1
           },
           new SpaceArticleDto()
     ];
