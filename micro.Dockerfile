@@ -8,7 +8,7 @@ ARG SUBFOLDER
 # Create app directory
 WORKDIR /project/${SUBFOLDER}
 COPY --chown=node:node package*.json ./
-COPY .example.dev .dev
+COPY .example.env .env
 RUN npm install
 RUN npm link commons
 
