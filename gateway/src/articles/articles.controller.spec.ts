@@ -26,7 +26,7 @@ describe('ArticlesController', () => {
 
   describe('test for list', () => {
     it('should call list from service', async () => {
-      mockArticleService.getList.mockResolvedValue([])
+      mockArticleService.getList.mockResolvedValue({data:[]})
       const query = new QueryDto();
       query.size = 10;
       query.page = 2;

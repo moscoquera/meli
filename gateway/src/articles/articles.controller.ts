@@ -9,8 +9,8 @@ export class ArticlesController {
 
   @Get()
   public async list(@Query() queryParams: QueryDto,@Res() response: Response) {
-    let result: unknown = this.articlesService.getList(queryParams.page, queryParams.size);
-    if(!Array.isArray(result)){
+    let result = await this.articlesService.getList(queryParams.page, queryParams.size);
+    if(!result.data){
       response.status(202);
       result = {
         caching:true
