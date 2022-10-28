@@ -27,7 +27,8 @@ describe('SpaceFlightNewsService', () => {
             updatedAt: "2022-10-20T17:33:21.553Z",
             featured: false,
             launches: [],
-            events: []
+            events: [],
+            remoteIndex:1
         },
         {
             id: 17001,
@@ -40,7 +41,8 @@ describe('SpaceFlightNewsService', () => {
             updatedAt: "2022-10-20T17:13:35.034Z",
             featured: false,
             launches: [],
-            events: []
+            events: [],
+            remoteIndex:2
         },
     ]
 
@@ -51,6 +53,7 @@ describe('SpaceFlightNewsService', () => {
                 title: "Space Force tries to turn over a new leaf in satellite procurement",
                 url: "https://spacenews.com/space-force-tries-to-turn-over-a-new-leaf-in-satellite-procurement/",
                 imageUrl: "https://spacenews.com/wp-content/uploads/2022/10/Screen-Shot-2022-10-20-at-8.55.19-AM.png",
+                remoteIndex:1
             }
         },
         {
@@ -59,6 +62,7 @@ describe('SpaceFlightNewsService', () => {
                 title: "Why NASA Is Trying To Crash Land on Mars",
                 url: "https://mars.nasa.gov/news/9283/",
                 imageUrl: "https://mars.nasa.gov/system/news_items/main_images/9283_1-Illustration-of-SHIELD-web.jpg",
+                remoteIndex:2
             }
         }
 
