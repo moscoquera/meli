@@ -5,18 +5,18 @@ export class ListMessage {
 }
 
 export class ArticleDto {
-    id: number;
-    title: string;
-    url: string;
-    imageUrl: string;
+    id: number =0;
+    title: string = '';
+    url: string = '';
+    imageUrl: string = '';
 }
 
 export class ArticleMessage extends ArticleDto{
-    remoteIndex: number;
+    remoteIndex: number = 0;
 }
 
 export class ScheduleJoMessage {
-    name: string;
-    data: unknown;
+    name: string = '';
+    data: unknown = '';
 }
   
