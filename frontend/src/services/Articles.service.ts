@@ -2,7 +2,7 @@ export class ArticlesService {
 
     readonly hostname = 'http://localhost:3000/articles?';
 
-    async list(page:1, size:10){
+    async list(page=1, size=10){
         const response = await fetch(this.hostname+ new URLSearchParams({
             "size":size.toString(),
             "page":page.toString()

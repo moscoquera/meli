@@ -5,7 +5,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
 import { ArticleMessage } from 'commons';
 import { ArticlesGrid } from './articles/Articles.Grid';
 import { ArticlesService } from './services/Articles.service';
@@ -22,15 +22,16 @@ function App() {
 
 
   useEffect(()=>{
-    service.list(1,10).then((data)=>{
-      setArticles(data);
-    }).catch(()=>{
+    service.list(1, 12).then((data)=>{
+      setArticles(data.data);
+    }).catch((e)=>{
+      console.log(e)
       alert('plz try again later');
     })
   },[])
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Container maxWidth="lg">
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -38,8 +39,10 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <ArticlesGrid articles={articles} />
-    </Box>
+      <Box marginTop={4}>
+        <ArticlesGrid articles={articles} />
+      </Box>
+    </Container>
   );
 }
 

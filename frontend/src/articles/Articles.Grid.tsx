@@ -6,16 +6,18 @@ export interface ArticlesGridProps {
     articles: ArticleMessage[];
 }
 
-export function ArticlesGrid({articles}: ArticlesGridProps) {
+export function ArticlesGrid({ articles }: ArticlesGridProps) {
 
 
     return (
-        <Grid container spacing={2}>
-            { articles.map((article) => (
-                <Grid item xs={12} md={4} lg={3}>
+        <Grid container spacing={2} direction="row"
+            justifyContent="flex-start"
+            alignItems="stretch">
+            {articles.map((article) => (
+                <Grid key={article.id} item xs={12} md={4} lg={3}>
                     <ArticlesGridItem {...article} />
                 </Grid>
-            )) }
+            ))}
         </Grid>
     )
 
