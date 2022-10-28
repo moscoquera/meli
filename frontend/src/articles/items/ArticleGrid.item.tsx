@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Link, Typography } from "@mui/material";
-import { ArticleDto } from "commons";
+import { ArticleDto } from "commons/src/patterns/articles";
 
 export function ArticlesGridItem(article: ArticleDto) {
 

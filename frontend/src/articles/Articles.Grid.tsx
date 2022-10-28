@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { ArticleDto, ArticleMessage } from "commons";
+import { ArticleDto } from "commons/src/patterns/articles";
 import { ArticlesGridItem } from "./items/ArticleGrid.item";
 
 export interface ArticlesGridProps {

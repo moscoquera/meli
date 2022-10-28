@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { AppBar, Box, Container, Pagination, Toolbar, Typography } from '@mui/material';
-import { ArticleDto } from 'commons';
+import { ArticleDto } from "commons/src/patterns/articles";
 import { ArticlesGrid } from './articles/Articles.Grid';
-import { ArticlesService } from './services/Articles.service';
+import { ArticlesService, CachingException } from './services/Articles.service';
 import { Stack } from '@mui/system';
 
 function App() {
@@ -28,9 +27,13 @@ function App() {
       setArticles(data.data);
       setPage(data.page)
       setTotalPage(data.totalPages)
-    }).catch((e)=>{
-      console.log(e)
-      alert('plz try again later');
+    }).catch((e:Error)=>{
+      if(e instanceof CachingException){
+        alert('backend caching,try again later');
+      }else{
+        alert('unable to reach the server,try again later');
+      }
+      
     })
   }
 
@@ -57,7 +60,7 @@ function App() {
         <ArticlesGrid articles={articles} />
       </Box>
       <Stack marginTop={4} alignItems={'center'}>
-        <Pagination count={totalPages} page={page} color="primary" onChange={handlePaginationChange} />
+        <Pagination count={totalPages} page={page} color="primary" onChange={handlePaginationChange} siblingCount={2} boundaryCount={2} />
       </Stack>
     </Container>
   );
