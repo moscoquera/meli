@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
-import { ArticleMessage } from "commons";
+import { ArticleDto, ArticleMessage } from "commons";
 import { ArticlesGridItem } from "./items/ArticleGrid.item";
 
 export interface ArticlesGridProps {
-    articles: ArticleMessage[];
+    articles: ArticleDto[];
 }
 
 export function ArticlesGrid({ articles }: ArticlesGridProps) {

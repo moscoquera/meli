@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Link, Typography } from "@mui/material";
-import { ArticleMessage } from "commons";
+import { ArticleDto } from "commons";
 
-export function ArticlesGridItem(article: ArticleMessage) {
+export function ArticlesGridItem(article: ArticleDto) {
 
     const defaultImageUrl = 'https://dummyimage.com/600x400/ffe600/2d3277.png&text=No+Image'
 
