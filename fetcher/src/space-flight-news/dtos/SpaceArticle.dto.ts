@@ -20,4 +20,5 @@ export class SpaceArticleDto {
   featured: boolean;
   launches: Launch[];
   events: Event[];
+  remoteIndex: number;
 }
