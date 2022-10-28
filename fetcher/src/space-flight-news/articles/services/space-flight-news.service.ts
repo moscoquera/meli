@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
 import { ScheduleJobDto } from '../../dtos/scheduledJob.dto';
 import { SpaceArticleDto } from '../../dtos/SpaceArticle.dto';
+import { ArticleMessage } from 'commons';
 
 @Injectable()
 export class SpaceFlightNewsService implements OnApplicationBootstrap {
@@ -34,7 +35,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   async listOrSchedule(
     page: number,
     size: number,
-  ): Promise<SpaceArticleDto[] | ScheduleJobDto> {
+  ): Promise<ArticleMessage[] | ScheduleJobDto> {
     if (this.canFetchNow()) {
       return this.list(page, size);
     }
@@ -50,7 +51,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
     const result = (
       await firstValueFrom(
         this.httpService.get(`${this.host}/articles`, {
-          params: { _limit: size, _start: size * (page - 1) },
+          params: { _limit: size, _start: size * (page - 1), _sort:'id' },
         }),
       )
     ).data;
@@ -70,7 +71,7 @@ export class SpaceFlightNewsService implements OnApplicationBootstrap {
   }
 
   updateLastFetchTime() {
-    return (this.lastFetchTime = new Date());
+    this.lastFetchTime = new Date();
   }
 
   canFetchNow() {
