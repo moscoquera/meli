@@ -6,14 +6,14 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { AppBar, Box, Container, Pagination, Toolbar, Typography } from '@mui/material';
-import { ArticleMessage } from 'commons';
+import { ArticleDto } from 'commons';
 import { ArticlesGrid } from './articles/Articles.Grid';
 import { ArticlesService } from './services/Articles.service';
 import { Stack } from '@mui/system';
 
 function App() {
   
-  const [articles,setArticles] = useState<ArticleMessage[]>([])
+  const [articles,setArticles] = useState<ArticleDto[]>([])
   const [page, setPage] = useState<number>(1)
   const [totalPages, setTotalPage] = useState<number>(1)
   
